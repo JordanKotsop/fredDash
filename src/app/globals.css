@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --chart-grid: #e5e7eb;
+  --chart-text: #6b7280;
+  --chart-cursor: #9ca3af;
+  --chart-recession: #fee2e2;
 }
 
 @theme inline {
@@ -16,6 +20,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --chart-grid: #374151;
+    --chart-text: #9ca3af;
+    --chart-cursor: #6b7280;
+    --chart-recession: #7f1d1d;
   }
 }
 
