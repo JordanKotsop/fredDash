@@ -40,7 +40,7 @@ function TrendArrow({ current, previous }: { current: number; previous: number }
 
   if (Math.abs(pctChange) < 0.01) {
     return (
-      <span className="inline-flex items-center gap-0.5 text-xs text-gray-500 dark:text-gray-400">
+      <span className="inline-flex items-center gap-0.5 text-xs" style={{ color: 'var(--text-tertiary)' }}>
         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
         </svg>
@@ -52,11 +52,8 @@ function TrendArrow({ current, previous }: { current: number; previous: number }
   const isUp = diff > 0;
   return (
     <span
-      className={`inline-flex items-center gap-0.5 text-xs font-medium ${
-        isUp
-          ? 'text-emerald-600 dark:text-emerald-400'
-          : 'text-red-600 dark:text-red-400'
-      }`}
+      className="inline-flex items-center gap-0.5 text-xs font-medium"
+      style={{ color: isUp ? 'var(--success)' : 'var(--error)' }}
     >
       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         {isUp ? (
@@ -100,11 +97,11 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
 
   if (loading) {
     return (
-      <div className="animate-pulse bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-4">
-        <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-        <div className="h-3 w-48 bg-gray-100 dark:bg-gray-800 rounded mb-3" />
-        <div className="h-[40px] bg-gray-100 dark:bg-gray-800 rounded mb-3" />
-        <div className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded" />
+      <div className="animate-pulse rounded-xl p-3 sm:p-4" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+        <div className="h-4 w-32 rounded mb-2" style={{ background: 'var(--surface-secondary)' }} />
+        <div className="h-3 w-48 rounded mb-3" style={{ background: 'var(--surface-hover)' }} />
+        <div className="h-[40px] rounded mb-3" style={{ background: 'var(--surface-hover)' }} />
+        <div className="h-6 w-20 rounded" style={{ background: 'var(--surface-secondary)' }} />
       </div>
     );
   }
@@ -113,10 +110,11 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
     return (
       <button
         onClick={onClick}
-        className="text-left w-full bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-4 opacity-60"
+        className="text-left w-full rounded-xl p-4 opacity-60"
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
       >
-        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{indicator.displayName}</p>
-        <p className="text-xs text-red-500 dark:text-red-400 mt-1">Data unavailable</p>
+        <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{indicator.displayName}</p>
+        <p className="text-xs mt-1" style={{ color: 'var(--error)' }}>Data unavailable</p>
       </button>
     );
   }
@@ -124,18 +122,19 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
   return (
     <button
       onClick={onClick}
-      className="text-left w-full bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-4 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-sm transition-all group"
+      className="text-left w-full rounded-xl p-3 sm:p-4 hover:shadow-sm transition-all group"
+      style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
     >
       <div className="flex items-start justify-between mb-1">
-        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        <p className="text-sm font-medium transition-colors" style={{ color: 'var(--text-primary)' }}>
           {indicator.displayName}
         </p>
-        <svg className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-blue-500 transition-colors shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-4 h-4 transition-colors shrink-0 mt-0.5" style={{ color: 'var(--border)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
         </svg>
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 italic">
+      <p className="text-xs mb-3 italic" style={{ color: 'var(--text-tertiary)' }}>
         {indicator.userQuestion}
       </p>
 
@@ -143,7 +142,7 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
 
       <div className="mt-3 flex items-end justify-between">
         <div>
-          <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <p className="text-base sm:text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
             {parsed.currentValue !== null ? formatByType(parsed.currentValue, indicator.format) : '—'}
           </p>
           {parsed.currentValue !== null && parsed.prevValue !== null && (
@@ -151,7 +150,7 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
           )}
         </div>
         {lastUpdated && (
-          <p className="text-[10px] text-gray-400 dark:text-gray-500">
+          <p className="text-[10px]" style={{ color: 'var(--text-placeholder)' }}>
             {lastUpdated}
           </p>
         )}

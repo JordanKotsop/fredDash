@@ -31,7 +31,8 @@ export function ExportPDFButton({ chartRef, options, className, compact = false 
         onClick={handleExport}
         disabled={exporting}
         title="Export PDF"
-        className={`p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 transition-colors ${className ?? ''}`}
+        className={`p-1.5 disabled:opacity-50 transition-colors ${className ?? ''}`}
+        style={{ color: 'var(--text-placeholder)' }}
       >
         {exporting ? (
           <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -51,7 +52,8 @@ export function ExportPDFButton({ chartRef, options, className, compact = false 
     <button
       onClick={handleExport}
       disabled={exporting}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg disabled:opacity-50 transition-colors ${className ?? ''}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg disabled:opacity-50 transition-colors ${className ?? ''}`}
+      style={{ color: 'var(--text-secondary)', background: 'var(--surface-secondary)' }}
     >
       {exporting ? (
         <>

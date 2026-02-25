@@ -11,7 +11,8 @@ export function DashboardNav() {
         <Link
           key={dashboard.id}
           href={`/dashboards/${dashboard.id}`}
-          className="group relative bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md transition-all"
+          className="group relative rounded-xl p-4 sm:p-5 hover:shadow-md transition-all"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
         >
           <div className="flex items-start gap-2.5 sm:gap-3">
             <div
@@ -23,18 +24,19 @@ export function DashboardNav() {
               </span>
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                {dashboard.title}
+              <h3 className="text-sm font-semibold transition-colors" style={{ color: 'var(--text-primary)' }}>
+                <span className="group-hover:hidden">{dashboard.title}</span>
+                <span className="hidden group-hover:inline" style={{ color: 'var(--primary)' }}>{dashboard.title}</span>
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+              <p className="text-xs mt-1 line-clamp-2" style={{ color: 'var(--text-tertiary)' }}>
                 {dashboard.description}
               </p>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-2">
+              <p className="text-[10px] mt-2" style={{ color: 'var(--text-placeholder)' }}>
                 {dashboard.indicators.length} indicators
               </p>
             </div>
           </div>
-          <svg className="absolute top-5 right-4 w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="absolute top-5 right-4 w-4 h-4 transition-colors" style={{ color: 'var(--border)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
           </svg>
         </Link>

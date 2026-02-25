@@ -1,12 +1,63 @@
 @import "tailwindcss";
 
+/* ============================================
+   FredDash Design System — Token Layer
+   Palette: purples, muted blues, coral, greys
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --chart-grid: #e5e7eb;
-  --chart-text: #6b7280;
-  --chart-cursor: #9ca3af;
-  --chart-recession: #fee2e2;
+  /* --- Surfaces --- */
+  --background: #F8F7FC;          /* warm off-white with faint purple tint */
+  --foreground: #1A1625;          /* near-black with purple undertone */
+  --surface: #FFFFFF;             /* card/panel background */
+  --surface-secondary: #F0EEF6;  /* subtle purple-grey for inset areas */
+  --surface-hover: #E8E5F0;      /* hover state on surface */
+
+  /* --- Borders --- */
+  --border: #DDD8E8;             /* soft purple-grey border */
+  --border-hover: #C5BED6;       /* border on hover */
+
+  /* --- Primary: deep purple --- */
+  --primary: #6C5CE7;
+  --primary-hover: #5A4BD6;
+  --primary-foreground: #FFFFFF;
+  --primary-muted: #EDE9FE;      /* light purple tint for badges/chips */
+
+  /* --- Accent: coral --- */
+  --accent: #D35D6E;             /* muted coral-red */
+  --accent-hover: #C04D5E;
+  --accent-foreground: #FFFFFF;
+  --accent-muted: #FBEAEC;       /* light coral tint */
+
+  /* --- Secondary: muted steel-blue --- */
+  --secondary: #5B7FA4;
+  --secondary-hover: #4E6D8E;
+  --secondary-foreground: #FFFFFF;
+  --secondary-muted: #E8EEF4;
+
+  /* --- Text hierarchy --- */
+  --text-primary: #1A1625;
+  --text-secondary: #5C5470;     /* muted purple-grey */
+  --text-tertiary: #8E87A0;      /* lighter purple-grey */
+  --text-placeholder: #B0A9C0;
+
+  /* --- Semantic --- */
+  --success: #2D8659;
+  --success-muted: #E6F5ED;
+  --warning: #B8860B;
+  --warning-muted: #FEF6E0;
+  --error: #C0392B;
+  --error-muted: #FDE8E6;
+
+  /* --- Chart tokens --- */
+  --chart-grid: #E0DBE9;
+  --chart-text: #8E87A0;
+  --chart-cursor: #B0A9C0;
+  --chart-recession: #FDE8E6;
+
+  /* --- Header accent gradient --- */
+  --header-gradient-from: #6C5CE7;
+  --header-gradient-to: #5B7FA4;
 }
 
 @theme inline {
@@ -16,19 +67,151 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* ============================================
+   Dark Mode
+   ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --chart-grid: #374151;
-    --chart-text: #9ca3af;
-    --chart-cursor: #6b7280;
-    --chart-recession: #7f1d1d;
+    /* --- Surfaces --- */
+    --background: #0D0B14;         /* deep charcoal-purple */
+    --foreground: #E8E4F0;         /* off-white with warmth */
+    --surface: #161225;            /* card background */
+    --surface-secondary: #1E1832;  /* slightly lighter panel */
+    --surface-hover: #2A2240;      /* hover on surface */
+
+    /* --- Borders --- */
+    --border: #2E2744;             /* dark purple border */
+    --border-hover: #3D3558;
+
+    /* --- Primary: softer purple for dark bg --- */
+    --primary: #A78BFA;
+    --primary-hover: #B9A2FB;
+    --primary-foreground: #0D0B14;
+    --primary-muted: #1E1540;
+
+    /* --- Accent: warmer coral in dark mode --- */
+    --accent: #E8816E;
+    --accent-hover: #F09580;
+    --accent-foreground: #0D0B14;
+    --accent-muted: #2A1A1F;
+
+    /* --- Secondary: lighter steel-blue --- */
+    --secondary: #7EA3C6;
+    --secondary-hover: #92B4D4;
+    --secondary-foreground: #0D0B14;
+    --secondary-muted: #15202D;
+
+    /* --- Text hierarchy --- */
+    --text-primary: #E8E4F0;
+    --text-secondary: #A9A0BC;
+    --text-tertiary: #7A7290;
+    --text-placeholder: #5C5470;
+
+    /* --- Semantic --- */
+    --success: #4ADE80;
+    --success-muted: #0F2818;
+    --warning: #FBBF24;
+    --warning-muted: #2A1F08;
+    --error: #F87171;
+    --error-muted: #2A1215;
+
+    /* --- Chart tokens --- */
+    --chart-grid: #2E2744;
+    --chart-text: #A9A0BC;
+    --chart-cursor: #7A7290;
+    --chart-recession: #2A1215;
+
+    /* --- Header accent gradient --- */
+    --header-gradient-from: #A78BFA;
+    --header-gradient-to: #7EA3C6;
   }
 }
 
+/* ============================================
+   Base Typography
+   ============================================ */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans, 'Inter', system-ui, -apple-system, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+  line-height: 1.6;
+}
+
+/* Typography scale utility classes */
+.text-heading-1 {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.text-heading-2 {
+  font-size: 1.375rem; /* 22px */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+.text-heading-3 {
+  font-size: 1.0625rem; /* 17px */
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+}
+.text-heading-4 {
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+.text-body {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 400;
+  line-height: 1.6;
+}
+.text-body-small {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 400;
+  line-height: 1.55;
+}
+.text-caption {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+.text-label {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* Ensure code/mono uses the Geist Mono font */
+code, pre, .font-mono {
+  font-family: var(--font-geist-mono, 'Fira Code', 'Consolas', monospace);
+}
+
+/* Smooth focus rings using primary color */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
 }

@@ -16,11 +16,12 @@ export function DateRangeSelector({ selected, onChange }: DateRangeSelectorProps
         <button
           key={preset}
           onClick={() => onChange(preset)}
-          className={`px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-medium rounded-md transition-colors ${
+          className="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-medium rounded-md transition-colors"
+          style={
             selected === preset
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
-          }`}
+              ? { background: 'var(--primary)', color: 'var(--primary-foreground)' }
+              : { background: 'var(--surface-secondary)', color: 'var(--text-secondary)' }
+          }
         >
           {preset}
         </button>

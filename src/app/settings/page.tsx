@@ -43,17 +43,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+      <header className="border-b" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}>
         <div className="max-w-3xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center gap-3 sm:gap-4">
-          <Link href="/" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+          <Link href="/" className="transition-colors" style={{ color: 'var(--text-tertiary)' }}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Settings</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Configure your API keys</p>
+            <h1 className="text-heading-2" style={{ color: 'var(--text-primary)' }}>Settings</h1>
+            <p className="text-body-small" style={{ color: 'var(--text-tertiary)' }}>Configure your API keys</p>
           </div>
         </div>
       </header>
@@ -61,8 +61,8 @@ export default function SettingsPage() {
       <main className="max-w-3xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8">
         {/* Current status */}
         {status && (
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Current Status</h2>
+          <div className="rounded-xl p-4 sm:p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <h2 className="text-heading-4 mb-3" style={{ color: 'var(--text-primary)' }}>Current Status</h2>
             <div className="grid gap-2">
               <StatusRow label="FRED API Key" configured={status.fred} />
               <StatusRow label="OpenAI API Key" configured={status.openai} />
@@ -71,20 +71,20 @@ export default function SettingsPage() {
         )}
 
         {/* FRED API Key */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
+        <div className="rounded-xl p-4 sm:p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <h2 className="text-heading-3 mb-1" style={{ color: 'var(--text-primary)' }}>
             FRED API Key
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          <p className="text-body-small mb-4" style={{ color: 'var(--text-secondary)' }}>
             Free key from the Federal Reserve Economic Data service. Required for all economic data.
           </p>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">How to get your key:</p>
-            <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 list-decimal list-inside">
+          <div className="rounded-lg p-4 mb-4" style={{ background: 'var(--surface-secondary)' }}>
+            <p className="text-body-small font-medium mb-2" style={{ color: 'var(--text-primary)' }}>How to get your key:</p>
+            <ol className="text-body-small space-y-1.5 list-decimal list-inside" style={{ color: 'var(--text-secondary)' }}>
               <li>
                 Go to{' '}
-                <a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">
+                <a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: 'var(--primary)' }}>
                   fred.stlouisfed.org/docs/api/api_key.html
                 </a>
               </li>
@@ -92,12 +92,12 @@ export default function SettingsPage() {
               <li>Fill in your name and email — the key is generated instantly</li>
               <li>Copy the 32-character key and paste it below</li>
             </ol>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            <p className="text-caption mt-2" style={{ color: 'var(--text-tertiary)' }}>
               It&apos;s completely free — no credit card needed.
             </p>
           </div>
 
-          <label htmlFor="fred-key" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label htmlFor="fred-key" className="block text-body-small font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
             API Key
           </label>
           <input
@@ -106,30 +106,36 @@ export default function SettingsPage() {
             value={fredKey}
             onChange={(e) => setFredKey(e.target.value)}
             placeholder="Paste your 32-character FRED API key"
-            className="w-full px-3 py-2.5 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400 dark:placeholder:text-gray-600 text-gray-900 dark:text-gray-100 font-mono"
+            className="w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:border-transparent font-mono"
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-primary)',
+              '--tw-ring-color': 'var(--primary)',
+            } as React.CSSProperties}
           />
           {validation.fred && (
-            <p className={`text-sm mt-2 ${validation.fred.valid ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+            <p className="text-sm mt-2" style={{ color: validation.fred.valid ? 'var(--success)' : 'var(--error)' }}>
               {validation.fred.valid ? 'Key is valid!' : validation.fred.error}
             </p>
           )}
         </div>
 
         {/* OpenAI API Key */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
+        <div className="rounded-xl p-4 sm:p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <h2 className="text-heading-3 mb-1" style={{ color: 'var(--text-primary)' }}>
             OpenAI API Key
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          <p className="text-body-small mb-4" style={{ color: 'var(--text-secondary)' }}>
             Required for natural language queries and AI-generated explanations. Uses GPT-4o.
           </p>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">How to get your key:</p>
-            <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 list-decimal list-inside">
+          <div className="rounded-lg p-4 mb-4" style={{ background: 'var(--surface-secondary)' }}>
+            <p className="text-body-small font-medium mb-2" style={{ color: 'var(--text-primary)' }}>How to get your key:</p>
+            <ol className="text-body-small space-y-1.5 list-decimal list-inside" style={{ color: 'var(--text-secondary)' }}>
               <li>
                 Go to{' '}
-                <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">
+                <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: 'var(--primary)' }}>
                   platform.openai.com/api-keys
                 </a>
               </li>
@@ -138,12 +144,12 @@ export default function SettingsPage() {
               <li>Give it a name like &ldquo;FredDash&rdquo; and click Create</li>
               <li>Copy the key immediately (it won&apos;t be shown again)</li>
             </ol>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            <p className="text-caption mt-2" style={{ color: 'var(--text-tertiary)' }}>
               Requires a paid OpenAI account. Typical usage costs $1-5/month.
             </p>
           </div>
 
-          <label htmlFor="openai-key" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label htmlFor="openai-key" className="block text-body-small font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
             API Key
           </label>
           <input
@@ -152,10 +158,16 @@ export default function SettingsPage() {
             value={openaiKey}
             onChange={(e) => setOpenaiKey(e.target.value)}
             placeholder="sk-..."
-            className="w-full px-3 py-2.5 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400 dark:placeholder:text-gray-600 text-gray-900 dark:text-gray-100 font-mono"
+            className="w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:border-transparent font-mono"
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-primary)',
+              '--tw-ring-color': 'var(--primary)',
+            } as React.CSSProperties}
           />
           {validation.openai && (
-            <p className={`text-sm mt-2 ${validation.openai.valid ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+            <p className="text-sm mt-2" style={{ color: validation.openai.valid ? 'var(--success)' : 'var(--error)' }}>
               {validation.openai.valid ? 'Key is valid!' : validation.openai.error}
             </p>
           )}
@@ -166,25 +178,26 @@ export default function SettingsPage() {
           <button
             onClick={handleValidate}
             disabled={(!fredKey && !openaiKey) || validating}
-            className="w-full py-3 text-sm font-medium bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-3 text-sm font-medium rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            style={{ background: 'var(--primary)', color: 'var(--primary-foreground)' }}
           >
             {validating ? 'Validating...' : 'Test Keys'}
           </button>
 
           {/* Instructions for .env.local */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 sm:p-5">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <div className="rounded-xl p-4 sm:p-5" style={{ background: 'var(--surface-secondary)' }}>
+            <h3 className="text-heading-4 mb-2" style={{ color: 'var(--text-primary)' }}>
               Save keys to your project
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              After validating, add your keys to the <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">.env.local</code> file in your project root:
+            <p className="text-body-small mb-3" style={{ color: 'var(--text-secondary)' }}>
+              After validating, add your keys to the <code className="px-1.5 py-0.5 rounded text-xs font-mono" style={{ background: 'var(--border)' }}>.env.local</code> file in your project root:
             </p>
-            <pre className="bg-gray-900 dark:bg-gray-950 text-green-400 text-[11px] sm:text-xs p-3 sm:p-4 rounded-lg overflow-x-auto font-mono">
+            <pre className="text-[11px] sm:text-xs p-3 sm:p-4 rounded-lg overflow-x-auto font-mono" style={{ background: '#1A1625', color: '#A78BFA' }}>
 {`FRED_API_KEY=${fredKey || 'your_fred_key_here'}
 OPENAI_API_KEY=${openaiKey || 'your_openai_key_here'}`}
             </pre>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-              After updating .env.local, restart your dev server (<code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">npm run dev</code>).
+            <p className="text-caption mt-2" style={{ color: 'var(--text-tertiary)' }}>
+              After updating .env.local, restart your dev server (<code className="px-1 rounded font-mono" style={{ background: 'var(--border)' }}>npm run dev</code>).
             </p>
           </div>
         </div>
@@ -197,15 +210,15 @@ function StatusRow({ label, configured }: { label: string; configured: boolean }
   return (
     <div className="flex items-center gap-2">
       {configured ? (
-        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-4 h-4" style={{ color: 'var(--success)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
       ) : (
-        <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-4 h-4" style={{ color: 'var(--error)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
       )}
-      <span className={`text-sm ${configured ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+      <span className="text-body-small" style={{ color: configured ? 'var(--success)' : 'var(--error)' }}>
         {label}: {configured ? 'Configured' : 'Not configured'}
       </span>
     </div>

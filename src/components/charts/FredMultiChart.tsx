@@ -108,7 +108,7 @@ export function FredMultiChart({
   const seriesErrors = data?.results.filter((r) => r.error) ?? [];
 
   return (
-    <div className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-5 ${className ?? ''}`}>
+    <div className={`rounded-xl p-3 sm:p-5 ${className ?? ''}`} style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
       <ChartHeader title={title} subtitle={subtitle} />
 
       <DateRangeSelector selected={datePreset} onChange={setDatePreset} />
@@ -119,12 +119,11 @@ export function FredMultiChart({
           <button
             key={s.id}
             onClick={() => toggleSeries(s.id)}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[11px] sm:text-xs rounded-full border transition-all ${
-              s.visible
-                ? 'border-transparent text-white'
-                : 'border-gray-200 dark:border-gray-700 text-gray-400 bg-transparent'
-            }`}
-            style={s.visible ? { backgroundColor: s.color } : undefined}
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[11px] sm:text-xs rounded-full transition-all"
+            style={s.visible
+              ? { backgroundColor: s.color, borderWidth: '1px', borderStyle: 'solid', borderColor: 'transparent', color: 'white' }
+              : { borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--border)', color: 'var(--text-placeholder)', background: 'transparent' }
+            }
           >
             <span
               className="w-2 h-2 rounded-full"
@@ -136,7 +135,7 @@ export function FredMultiChart({
       </div>
 
       {seriesErrors.length > 0 && (
-        <div className="text-xs text-amber-600 dark:text-amber-400 mb-2">
+        <div className="text-xs mb-2" style={{ color: 'var(--warning)' }}>
           {seriesErrors.map((e) => (
             <p key={e.series_id}>Failed to load {e.series_id}: {e.error}</p>
           ))}
