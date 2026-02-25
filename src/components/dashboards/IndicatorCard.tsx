@@ -100,7 +100,7 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
 
   if (loading) {
     return (
-      <div className="animate-pulse bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <div className="animate-pulse bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-4">
         <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
         <div className="h-3 w-48 bg-gray-100 dark:bg-gray-800 rounded mb-3" />
         <div className="h-[40px] bg-gray-100 dark:bg-gray-800 rounded mb-3" />
@@ -124,7 +124,7 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
   return (
     <button
       onClick={onClick}
-      className="text-left w-full bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-4 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-sm transition-all group"
+      className="text-left w-full bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-4 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-sm transition-all group"
     >
       <div className="flex items-start justify-between mb-1">
         <p className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -143,7 +143,7 @@ export function IndicatorCard({ indicator, color, onClick }: IndicatorCardProps)
 
       <div className="mt-3 flex items-end justify-between">
         <div>
-          <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
             {parsed.currentValue !== null ? formatByType(parsed.currentValue, indicator.format) : '—'}
           </p>
           {parsed.currentValue !== null && parsed.prevValue !== null && (

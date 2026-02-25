@@ -6,16 +6,16 @@ import { DashboardIcon } from './DashboardIcon';
 
 export function DashboardNav() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
       {DASHBOARDS.map((dashboard) => (
         <Link
           key={dashboard.id}
           href={`/dashboards/${dashboard.id}`}
-          className="group relative bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md transition-all"
+          className="group relative bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md transition-all"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-2.5 sm:gap-3">
             <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0"
               style={{ backgroundColor: `${dashboard.color}15` }}
             >
               <span style={{ color: dashboard.color }}>

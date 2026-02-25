@@ -100,16 +100,16 @@ export function SocialSharePanel({
         </button>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
         {/* Tone Selector */}
         <div>
           <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Tone</p>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             {TONES.map((t) => (
               <button
                 key={t.value}
                 onClick={() => { setTone(t.value); setPost(null); }}
-                className={`flex-1 px-3 py-2 text-xs rounded-lg border transition-all ${
+                className={`flex-1 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs rounded-lg border transition-all ${
                   tone === t.value
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300'
                     : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300'
@@ -153,9 +153,9 @@ export function SocialSharePanel({
         {post && (
           <div className="space-y-3">
             {/* Single tweet preview */}
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-2.5 sm:p-3">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
                 <div>
                   <p className="text-xs font-bold text-gray-900 dark:text-gray-100">You</p>
                   <p className="text-[10px] text-gray-500">@yourusername</p>

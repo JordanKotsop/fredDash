@@ -17,7 +17,7 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
         <Link
           href="/"
           className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -27,7 +27,7 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
           </svg>
         </Link>
         <div
-          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0"
           style={{ backgroundColor: `${dashboard.color}15` }}
         >
           <span style={{ color: dashboard.color }}>
@@ -35,10 +35,10 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
           </span>
         </div>
         <div>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
             {dashboard.title}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             {dashboard.description}
           </p>
         </div>
@@ -73,7 +73,7 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
       )}
 
       {/* Indicator grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {dashboard.indicators.map((indicator) => (
           <IndicatorCard
             key={indicator.seriesId}

@@ -108,18 +108,18 @@ export function FredMultiChart({
   const seriesErrors = data?.results.filter((r) => r.error) ?? [];
 
   return (
-    <div className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 ${className ?? ''}`}>
+    <div className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-5 ${className ?? ''}`}>
       <ChartHeader title={title} subtitle={subtitle} />
 
       <DateRangeSelector selected={datePreset} onChange={setDatePreset} />
 
       {/* Series toggles */}
-      <div className="flex flex-wrap gap-2 mb-3">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
         {chartSeries.map((s) => (
           <button
             key={s.id}
             onClick={() => toggleSeries(s.id)}
-            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full border transition-all ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[11px] sm:text-xs rounded-full border transition-all ${
               s.visible
                 ? 'border-transparent text-white'
                 : 'border-gray-200 dark:border-gray-700 text-gray-400 bg-transparent'

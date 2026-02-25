@@ -56,7 +56,7 @@ export function QuerySearchBar({ onSubmit, loading, history, onSelectHistory }: 
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative">
           {/* Search icon */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+          <div className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400">
             {loading ? (
               <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
@@ -76,14 +76,14 @@ export function QuerySearchBar({ onSubmit, loading, history, onSelectHistory }: 
             onChange={(e) => setValue(e.target.value)}
             onFocus={() => setShowDropdown(true)}
             placeholder="Ask about the economy in plain English..."
-            className="w-full pl-12 pr-24 py-4 text-base bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100"
+            className="w-full pl-10 sm:pl-12 pr-16 sm:pr-24 py-3 sm:py-4 text-sm sm:text-base bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100"
             disabled={loading}
           />
 
           <button
             type="submit"
             disabled={!value.trim() || loading}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Thinking...' : 'Ask'}
           </button>

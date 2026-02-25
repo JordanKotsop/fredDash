@@ -115,14 +115,14 @@ export function ChartAnnotationBar({
 
       {/* Expanded event explanation */}
       {expandedEvent && (
-        <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg animate-in fade-in slide-in-from-top-1 duration-200">
           <div
             className="w-2.5 h-2.5 rounded-full mt-1 shrink-0"
             style={{ backgroundColor: categoryColors[expandedEvent.category] }}
           />
           <div className="flex-1 min-w-0">
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+              <span className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {expandedEvent.label}
               </span>
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full" style={{

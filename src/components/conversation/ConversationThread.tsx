@@ -16,11 +16,11 @@ export function ConversationThread({ messages, loading }: ConversationThreadProp
   }, [messages, loading]);
 
   return (
-    <div className="max-h-[300px] overflow-y-auto space-y-3 scroll-smooth">
+    <div className="max-h-[250px] sm:max-h-[300px] md:max-h-[400px] overflow-y-auto space-y-2 sm:space-y-3 scroll-smooth">
       {messages.map((msg) => (
         <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
           <div
-            className={`max-w-[85%] px-3.5 py-2.5 rounded-xl text-sm leading-relaxed ${
+            className={`max-w-[90%] sm:max-w-[85%] px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl text-sm leading-relaxed ${
               msg.role === 'user'
                 ? 'bg-blue-600 text-white rounded-br-md'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-md'

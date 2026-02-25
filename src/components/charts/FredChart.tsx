@@ -88,7 +88,7 @@ export function FredChart({
   if (chartData.length === 0) return <ChartError message="No data available for this series." />;
 
   return (
-    <div ref={chartContainerRef} className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 ${className ?? ''}`}>
+    <div ref={chartContainerRef} className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-3 sm:p-5 ${className ?? ''}`}>
       <div className="flex items-start justify-between">
         <ChartHeader
           title={displayTitle}

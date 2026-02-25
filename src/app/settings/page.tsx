@@ -45,7 +45,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
+        <div className="max-w-3xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center gap-3 sm:gap-4">
           <Link href="/" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -58,10 +58,10 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main className="max-w-3xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8">
         {/* Current status */}
         {status && (
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Current Status</h2>
             <div className="grid gap-2">
               <StatusRow label="FRED API Key" configured={status.fred} />
@@ -71,7 +71,7 @@ export default function SettingsPage() {
         )}
 
         {/* FRED API Key */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
           <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
             FRED API Key
           </h2>
@@ -116,7 +116,7 @@ export default function SettingsPage() {
         </div>
 
         {/* OpenAI API Key */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5">
           <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
             OpenAI API Key
           </h2>
@@ -172,14 +172,14 @@ export default function SettingsPage() {
           </button>
 
           {/* Instructions for .env.local */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-5">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 sm:p-5">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
               Save keys to your project
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
               After validating, add your keys to the <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">.env.local</code> file in your project root:
             </p>
-            <pre className="bg-gray-900 dark:bg-gray-950 text-green-400 text-xs p-4 rounded-lg overflow-x-auto font-mono">
+            <pre className="bg-gray-900 dark:bg-gray-950 text-green-400 text-[11px] sm:text-xs p-3 sm:p-4 rounded-lg overflow-x-auto font-mono">
 {`FRED_API_KEY=${fredKey || 'your_fred_key_here'}
 OPENAI_API_KEY=${openaiKey || 'your_openai_key_here'}`}
             </pre>
