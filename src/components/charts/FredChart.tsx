@@ -11,6 +11,7 @@ import { EconChart } from './EconChart';
 import { ChartFooter } from './ChartFooter';
 import { ChartSkeleton } from './ChartSkeleton';
 import { ChartError } from './ChartError';
+import { ExplanationPanel } from '@/components/explanations';
 
 interface FredChartProps {
   seriesId: string;
@@ -20,6 +21,7 @@ interface FredChartProps {
   defaultPreset?: DatePreset;
   showRecessions?: boolean;
   showAverage?: boolean;
+  showExplanation?: boolean;
   height?: number;
   color?: string;
   className?: string;
@@ -33,6 +35,7 @@ export function FredChart({
   defaultPreset = '5Y',
   showRecessions = true,
   showAverage = false,
+  showExplanation = true,
   height = 350,
   color,
   className,
@@ -94,6 +97,13 @@ export function FredChart({
         showAverage={showAverage}
       />
       <ChartFooter source="Federal Reserve Economic Data (FRED)" cached={cached} />
+      {showExplanation && (
+        <ExplanationPanel
+          seriesName={displayTitle}
+          seriesId={seriesId}
+          dateRange={datePreset}
+        />
+      )}
     </div>
   );
 }
