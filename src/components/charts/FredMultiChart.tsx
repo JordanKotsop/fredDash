@@ -40,7 +40,7 @@ export function FredMultiChart({
   defaultPreset = '5Y',
   showRecessions: initialRecessions = true,
   showAverage: initialAverage = false,
-  height = 350,
+  height,
   className,
 }: FredMultiChartProps) {
   const [datePreset, setDatePreset] = useState<DatePreset>(defaultPreset);

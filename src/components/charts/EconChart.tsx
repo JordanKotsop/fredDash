@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -21,6 +21,49 @@ import { subMonths } from 'date-fns';
 import type { ChartSeries, ChartDataPoint, DatePreset, HistoricalEvent } from '@/lib/chart/types';
 import { RECESSION_PERIODS, HISTORICAL_EVENTS, DATE_PRESET_MONTHS, formatValue, formatDateShort } from '@/lib/chart/constants';
 import { ChartTooltip } from './ChartTooltip';
+
+// Hook to measure container width and derive responsive chart dimensions
+function useResponsiveChart(containerRef: React.RefObject<HTMLDivElement | null>) {
+  const [width, setWidth] = useState(800);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(el);
+    setWidth(el.clientWidth);
+    return () => observer.disconnect();
+  }, [containerRef]);
+
+  // Derive responsive dimensions from container width
+  const isMobile = width < 480;
+  const isTablet = width >= 480 && width < 768;
+
+  return {
+    width,
+    // Dynamic chart height based on container width
+    chartHeight: isMobile ? 240 : isTablet ? 300 : 350,
+    // Y-axis width: narrower on mobile to give more room to data
+    yAxisWidth: isMobile ? 45 : 60,
+    // Tick font size
+    tickFontSize: isMobile ? 9 : 11,
+    // Legend font size
+    legendFontSize: isMobile ? 10 : 12,
+    // Margins: tighter on mobile
+    margins: {
+      top: 5,
+      right: isMobile ? 5 : 20,
+      bottom: 5,
+      left: isMobile ? 2 : 10,
+    },
+    isMobile,
+  };
+}
 
 interface EconChartProps {
   data: ChartDataPoint[];
@@ -72,13 +115,16 @@ export function EconChart({
   data,
   series,
   datePreset,
-  height = 350,
+  height: heightOverride,
   showRecessions = true,
   showAverage = false,
   showStdDev = false,
   showEvents = false,
   className,
 }: EconChartProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const responsive = useResponsiveChart(containerRef);
+  const height = heightOverride ?? responsive.chartHeight;
   // Filter data by date preset
   const filteredData = useMemo(() => {
     const months = DATE_PRESET_MONTHS[datePreset];
@@ -179,14 +225,16 @@ export function EconChart({
   // X-axis tick formatter
   const tickFormatter = useCallback((value: string) => formatDateShort(value), []);
 
-  // Compute tick count based on data size
+  // Compute tick count based on data size AND container width
   const xTickCount = useMemo(() => {
     const len = filteredData.length;
-    if (len <= 12) return len;
-    if (len <= 60) return 6;
-    if (len <= 120) return 8;
-    return 10;
-  }, [filteredData.length]);
+    // Fewer ticks on narrow screens
+    const maxTicks = responsive.isMobile ? 5 : responsive.width < 768 ? 6 : 10;
+    if (len <= 12) return Math.min(len, maxTicks);
+    if (len <= 60) return Math.min(6, maxTicks);
+    if (len <= 120) return Math.min(8, maxTicks);
+    return maxTicks;
+  }, [filteredData.length, responsive.isMobile, responsive.width]);
 
   const visibleSeries = series.filter((s) => s.visible);
 
@@ -196,15 +244,18 @@ export function EconChart({
   }, []);
 
   return (
-    <div className={className}>
+    <div ref={containerRef} className={className}>
       <ResponsiveContainer width="100%" height={height}>
-        <ComposedChart data={filteredData} margin={{ top: 5, right: hasRightAxis ? 10 : 20, bottom: 5, left: 10 }}>
+        <ComposedChart data={filteredData} margin={{
+          ...responsive.margins,
+          right: hasRightAxis ? (responsive.isMobile ? 5 : 10) : responsive.margins.right,
+        }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid, #e5e7eb)" opacity={0.5} />
 
           <XAxis
             dataKey="date"
             tickFormatter={tickFormatter}
-            tick={{ fontSize: 11, fill: 'var(--chart-text, #6b7280)' }}
+            tick={{ fontSize: responsive.tickFontSize, fill: 'var(--chart-text, #6b7280)' }}
             tickLine={false}
             axisLine={{ stroke: 'var(--chart-grid, #e5e7eb)' }}
             interval={Math.max(0, Math.floor(filteredData.length / xTickCount) - 1)}
@@ -212,39 +263,39 @@ export function EconChart({
 
           <YAxis
             yAxisId="left"
-            tick={{ fontSize: 11, fill: 'var(--chart-text, #6b7280)' }}
+            tick={{ fontSize: responsive.tickFontSize, fill: 'var(--chart-text, #6b7280)' }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v: number) =>
               formatValue(v, visibleSeries.find((s) => s.yAxisId !== 'right')?.units)
             }
-            width={60}
+            width={responsive.yAxisWidth}
           />
 
           {hasRightAxis && (
             <YAxis
               yAxisId="right"
               orientation="right"
-              tick={{ fontSize: 11, fill: 'var(--chart-text, #6b7280)' }}
+              tick={{ fontSize: responsive.tickFontSize, fill: 'var(--chart-text, #6b7280)' }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) =>
                 formatValue(v, visibleSeries.find((s) => s.yAxisId === 'right')?.units)
               }
-              width={60}
+              width={responsive.yAxisWidth}
             />
           )}
 
           <Tooltip
-            content={<ChartTooltip series={series} />}
+            content={<ChartTooltip series={series} isMobile={responsive.isMobile} />}
             cursor={{ stroke: 'var(--chart-cursor, #9ca3af)', strokeDasharray: '4 4' }}
           />
 
           {visibleSeries.length > 1 && (
             <Legend
               iconType="circle"
-              iconSize={8}
-              wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+              iconSize={responsive.isMobile ? 6 : 8}
+              wrapperStyle={{ fontSize: responsive.legendFontSize, paddingTop: 6 }}
             />
           )}
 

@@ -59,7 +59,7 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
           series={seriesConfigs}
           defaultPreset={chartState.dateRange}
           showRecessions
-          height={350}
+          /* height auto-determined by EconChart responsive hook */
         />
 
         {/* Undo / Redo / Reset controls */}

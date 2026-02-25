@@ -38,7 +38,7 @@ export function FredChart({
   showRecessions = true,
   showAverage = false,
   showExplanation = true,
-  height = 350,
+  height,
   color,
   className,
 }: FredChartProps) {
