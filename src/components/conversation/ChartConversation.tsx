@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { QueryInterpretation } from '@/lib/ai/types';
 import { useChartConversation } from '@/hooks/use-chart-conversation';
 import { FredMultiChart } from '@/components/charts';
+import { ExportPDFButton } from '@/components/pdf';
 import { ConversationThread } from './ConversationThread';
 
 interface ChartConversationProps {
@@ -28,6 +29,7 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
 
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const chartContainerRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
   return (
     <div className="space-y-4">
       {/* Chart with controls */}
-      <div className="relative">
+      <div className="relative" ref={chartContainerRef}>
         <FredMultiChart
           title={chartState.title}
           subtitle={chartState.subtitle}
@@ -89,11 +91,27 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
             Reset
           </button>
 
-          {chartState.units !== 'lin' && (
-            <span className="ml-auto text-[10px] text-gray-400 dark:text-gray-500">
-              Units: {chartState.units}
-            </span>
-          )}
+          <div className="ml-auto flex items-center gap-1">
+            {chartState.units !== 'lin' && (
+              <span className="text-[10px] text-gray-400 dark:text-gray-500 mr-2">
+                Units: {chartState.units}
+              </span>
+            )}
+            <ExportPDFButton
+              chartRef={chartContainerRef}
+              compact
+              options={{
+                title: chartState.title,
+                subtitle: chartState.subtitle,
+                explanation: interpretation.explanation,
+                conversationExcerpts: messages.length > 0
+                  ? messages.map((m) => ({ role: m.role, content: m.content }))
+                  : undefined,
+                seriesLabels: chartState.series.map((s) => s.label),
+                dateRange: chartState.dateRange,
+              }}
+            />
+          </div>
         </div>
       </div>
 

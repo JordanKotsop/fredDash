@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "date-fns": "^4.1.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.0",
     "lru-cache": "^11.2.6",
     "next": "16.1.6",
     "openai": "^6.25.0",

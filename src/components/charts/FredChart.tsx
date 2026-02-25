@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useFredObservations, useFredSeries } from '@/hooks/use-fred';
 import { parseObservationValue } from '@/lib/fred/types';
 import type { DatePreset, ChartSeries, ChartDataPoint } from '@/lib/chart/types';
@@ -12,6 +12,7 @@ import { ChartFooter } from './ChartFooter';
 import { ChartSkeleton } from './ChartSkeleton';
 import { ChartError } from './ChartError';
 import { ExplanationPanel } from '@/components/explanations';
+import { ExportPDFButton } from '@/components/pdf';
 
 interface FredChartProps {
   seriesId: string;
@@ -41,6 +42,7 @@ export function FredChart({
   className,
 }: FredChartProps) {
   const [datePreset, setDatePreset] = useState<DatePreset>(defaultPreset);
+  const chartContainerRef = useRef<HTMLDivElement>(null);
 
   const { data: obsData, error: obsError, loading: obsLoading, cached } = useFredObservations({
     seriesId,
@@ -81,12 +83,24 @@ export function FredChart({
   if (chartData.length === 0) return <ChartError message="No data available for this series." />;
 
   return (
-    <div className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 ${className ?? ''}`}>
-      <ChartHeader
-        title={displayTitle}
-        subtitle={displaySubtitle}
-        lastUpdated={seriesInfo?.last_updated}
-      />
+    <div ref={chartContainerRef} className={`bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 ${className ?? ''}`}>
+      <div className="flex items-start justify-between">
+        <ChartHeader
+          title={displayTitle}
+          subtitle={displaySubtitle}
+          lastUpdated={seriesInfo?.last_updated}
+        />
+        <ExportPDFButton
+          chartRef={chartContainerRef}
+          compact
+          options={{
+            title: displayTitle,
+            subtitle: displaySubtitle,
+            seriesLabels: [seriesInfo?.title ?? seriesId],
+            dateRange: datePreset,
+          }}
+        />
+      </div>
       <DateRangeSelector selected={datePreset} onChange={setDatePreset} />
       <EconChart
         data={chartData}
