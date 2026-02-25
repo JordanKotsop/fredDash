@@ -6,12 +6,21 @@ const TWITTER_HEIGHT = 675;
 export async function captureChartImage(
   chartElement: HTMLElement
 ): Promise<string> {
-  // Capture at 2x for sharpness
+  // Capture at 2x for sharpness.
+  // onclone forces light mode + simple colors so html2canvas doesn't choke on lab()/oklch().
   const canvas = await html2canvas(chartElement, {
     scale: 2,
     useCORS: true,
     backgroundColor: '#ffffff',
     logging: false,
+    onclone: (clonedDoc) => {
+      const root = clonedDoc.documentElement;
+      root.style.setProperty('--background', '#ffffff');
+      root.style.setProperty('--foreground', '#171717');
+      root.style.setProperty('color-scheme', 'light');
+      clonedDoc.body.style.backgroundColor = '#ffffff';
+      clonedDoc.body.style.color = '#171717';
+    },
   });
 
   // Create a new canvas at Twitter card dimensions

@@ -194,7 +194,6 @@ export function EconChart({
           {/* Data series */}
           {visibleSeries.map((s) => {
             const commonProps = {
-              key: s.id,
               dataKey: s.id,
               name: s.label,
               yAxisId: s.yAxisId ?? 'left',
@@ -207,6 +206,7 @@ export function EconChart({
             if (s.type === 'area') {
               return (
                 <Area
+                  key={s.id}
                   {...commonProps}
                   fill={s.color}
                   fillOpacity={0.15}
@@ -218,6 +218,7 @@ export function EconChart({
             if (s.type === 'bar') {
               return (
                 <Bar
+                  key={s.id}
                   {...commonProps}
                   fill={s.color}
                   fillOpacity={0.7}
@@ -227,6 +228,7 @@ export function EconChart({
             }
             return (
               <Line
+                key={s.id}
                 {...commonProps}
                 strokeWidth={2}
                 type="monotone"

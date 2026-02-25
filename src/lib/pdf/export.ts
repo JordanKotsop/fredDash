@@ -8,7 +8,6 @@ export interface PdfExportOptions {
   conversationExcerpts?: { role: 'user' | 'assistant'; content: string }[];
   seriesLabels?: string[];
   dateRange?: string;
-  generatedDate?: string;
 }
 
 function slugify(text: string): string {
@@ -21,14 +20,6 @@ function slugify(text: string): string {
 
 function formatDate(): string {
   return new Date().toISOString().split('T')[0];
-}
-
-function wrapText(doc: jsPDF, text: string, x: number, maxWidth: number, lineHeight: number): number {
-  const lines = doc.splitTextToSize(text, maxWidth);
-  for (const line of lines) {
-    doc.text(line, x, doc.internal.pageSize.getHeight() > 0 ? 0 : 0); // placeholder
-  }
-  return lines.length * lineHeight;
 }
 
 export async function exportChartToPdf(
@@ -44,17 +35,37 @@ export async function exportChartToPdf(
     dateRange,
   } = options;
 
-  // Capture chart at 2x resolution
+  // Capture chart at 2x resolution.
+  // html2canvas cannot parse CSS lab() colors (used by Tailwind v4),
+  // so we temporarily override computed styles on the element to avoid crashes.
+  // Setting ignoreElements to skip elements outside the chart also helps.
   const canvas = await html2canvas(chartElement, {
     scale: 2,
     useCORS: true,
     backgroundColor: '#ffffff',
     logging: false,
+    // Ignore elements that might use unsupported CSS color functions
+    ignoreElements: (el) => {
+      return el.tagName === 'STYLE' || el.classList?.contains('sr-only');
+    },
+    onclone: (clonedDoc) => {
+      // Force all elements in the clone to use simple rgb colors
+      // This prevents html2canvas from choking on lab(), oklch(), etc.
+      const root = clonedDoc.documentElement;
+      root.style.setProperty('--background', '#ffffff');
+      root.style.setProperty('--foreground', '#171717');
+      root.style.setProperty('color-scheme', 'light');
+
+      // Force light mode on the cloned body
+      const body = clonedDoc.body;
+      body.style.backgroundColor = '#ffffff';
+      body.style.color = '#171717';
+    },
   });
 
   const imgData = canvas.toDataURL('image/png');
 
-  // Create PDF (Letter size)
+  // Create PDF (landscape A4)
   const doc = new jsPDF('landscape', 'mm', 'a4');
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -76,7 +87,7 @@ export async function exportChartToPdf(
   y = 26;
 
   // --- Title ---
-  doc.setTextColor(17, 24, 39); // gray-900
+  doc.setTextColor(17, 24, 39);
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.text(title, margin, y);
@@ -85,7 +96,7 @@ export async function exportChartToPdf(
   if (subtitle) {
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(107, 114, 128); // gray-500
+    doc.setTextColor(107, 114, 128);
     doc.text(subtitle, margin, y);
     y += 5;
   }
@@ -111,7 +122,6 @@ export async function exportChartToPdf(
   const imgW = Math.min(contentW, 250);
   const imgH = imgW / imgAspect;
 
-  // Check if chart fits on current page
   if (y + imgH > pageH - 25) {
     doc.addPage();
     y = margin;
@@ -127,28 +137,32 @@ export async function exportChartToPdf(
       y = margin;
     }
 
-    doc.setFillColor(239, 246, 255); // blue-50
-    doc.roundedRect(margin, y, contentW, 0.1, 2, 2, 'F'); // placeholder for height
+    // Measure text first to get box height
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    const explanationLines = doc.splitTextToSize(explanation, contentW - 8);
+    const textBlockH = explanationLines.length * 4.5;
+    const boxPaddingTop = 10; // space for "What This Means" heading
+    const boxPaddingBottom = 6;
+    const boxH = boxPaddingTop + textBlockH + boxPaddingBottom;
 
+    // Draw background FIRST
+    doc.setFillColor(239, 246, 255); // blue-50
+    doc.roundedRect(margin, y, contentW, boxH, 2, 2, 'F');
+
+    // Then draw heading
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 64, 175); // blue-800
-    y += 5;
-    doc.text('What This Means', margin + 4, y);
-    y += 5;
+    doc.setTextColor(30, 64, 175);
+    doc.text('What This Means', margin + 4, y + 6);
 
+    // Then draw explanation text
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(30, 64, 175);
-    const explanationLines = doc.splitTextToSize(explanation, contentW - 8);
-    const boxH = explanationLines.length * 4.5 + 12;
+    doc.text(explanationLines, margin + 4, y + boxPaddingTop + 2);
 
-    // Redraw the box with correct height
-    doc.setFillColor(239, 246, 255);
-    doc.roundedRect(margin, y - 10, contentW, boxH, 2, 2, 'F');
-
-    doc.text(explanationLines, margin + 4, y);
-    y += explanationLines.length * 4.5 + 6;
+    y += boxH + 4;
   }
 
   // --- Conversation Excerpts ---
@@ -175,24 +189,32 @@ export async function exportChartToPdf(
 
       doc.setFontSize(8);
       doc.setFont('helvetica', msg.role === 'user' ? 'bold' : 'normal');
-      doc.setTextColor(msg.role === 'user' ? 37 : 75, msg.role === 'user' ? 99 : 85, msg.role === 'user' ? 235 : 99);
+      doc.setTextColor(
+        msg.role === 'user' ? 37 : 75,
+        msg.role === 'user' ? 99 : 85,
+        msg.role === 'user' ? 235 : 99
+      );
       const lines = doc.splitTextToSize(`${prefix}${truncated}`, contentW - 4);
       doc.text(lines, margin + 2, y);
       y += lines.length * 3.8 + 3;
     }
   }
 
-  // --- Footer ---
-  const footerY = pageH - 10;
-  doc.setDrawColor(229, 231, 235); // gray-200
-  doc.line(margin, footerY - 3, pageW - margin, footerY - 3);
+  // --- Footer (on every page) ---
+  const totalPages = doc.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    const footerY = pageH - 10;
+    doc.setDrawColor(229, 231, 235);
+    doc.line(margin, footerY - 3, pageW - margin, footerY - 3);
 
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(156, 163, 175); // gray-400
-  doc.text('Data Source: Federal Reserve Economic Data (FRED), Federal Reserve Bank of St. Louis', margin, footerY);
-  doc.text('This report is for informational purposes only and does not constitute financial advice.', margin, footerY + 3.5);
-  doc.text('FredDash — AI-Powered Economic Data Dashboard', pageW - margin, footerY, { align: 'right' });
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(156, 163, 175);
+    doc.text('Data Source: Federal Reserve Economic Data (FRED), Federal Reserve Bank of St. Louis', margin, footerY);
+    doc.text('This report is for informational purposes only and does not constitute financial advice.', margin, footerY + 3.5);
+    doc.text('FredDash — AI-Powered Economic Data Dashboard', pageW - margin, footerY, { align: 'right' });
+  }
 
   // --- Save ---
   const filename = `fredDash-${slugify(title)}-${formatDate()}.pdf`;
