@@ -11,6 +11,7 @@ import { EconChart } from './EconChart';
 import { ChartFooter } from './ChartFooter';
 import { ChartSkeleton } from './ChartSkeleton';
 import { ChartError } from './ChartError';
+import { ChartAnnotationBar } from './ChartAnnotationBar';
 
 interface SeriesConfig {
   id: string;
@@ -37,8 +38,8 @@ export function FredMultiChart({
   title,
   subtitle,
   defaultPreset = '5Y',
-  showRecessions = true,
-  showAverage = false,
+  showRecessions: initialRecessions = true,
+  showAverage: initialAverage = false,
   height = 350,
   className,
 }: FredMultiChartProps) {
@@ -46,6 +47,10 @@ export function FredMultiChart({
   const [visibility, setVisibility] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(seriesConfigs.map((s) => [s.id, true]))
   );
+  const [showRecessions, setShowRecessions] = useState(initialRecessions);
+  const [showAverage, setShowAverage] = useState(initialAverage);
+  const [showStdDev, setShowStdDev] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
 
   const { data, error, loading, refetch } = useFredMultiSeries({
     seriesIds: seriesConfigs.map((s) => s.id),
@@ -145,7 +150,23 @@ export function FredMultiChart({
         height={height}
         showRecessions={showRecessions}
         showAverage={showAverage}
+        showStdDev={showStdDev}
+        showEvents={showEvents}
       />
+
+      {/* Annotation toggles */}
+      <div className="mt-3">
+        <ChartAnnotationBar
+          showRecessions={showRecessions}
+          showAverage={showAverage}
+          showStdDev={showStdDev}
+          showEvents={showEvents}
+          onToggleRecessions={() => setShowRecessions((v) => !v)}
+          onToggleAverage={() => setShowAverage((v) => !v)}
+          onToggleStdDev={() => setShowStdDev((v) => !v)}
+          onToggleEvents={() => setShowEvents((v) => !v)}
+        />
+      </div>
 
       <ChartFooter source="Federal Reserve Economic Data (FRED)" />
     </div>

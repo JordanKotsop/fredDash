@@ -11,6 +11,7 @@ import { EconChart } from './EconChart';
 import { ChartFooter } from './ChartFooter';
 import { ChartSkeleton } from './ChartSkeleton';
 import { ChartError } from './ChartError';
+import { ChartAnnotationBar } from './ChartAnnotationBar';
 import { ExplanationPanel } from '@/components/explanations';
 import { ExportPDFButton } from '@/components/pdf';
 
@@ -42,6 +43,10 @@ export function FredChart({
   className,
 }: FredChartProps) {
   const [datePreset, setDatePreset] = useState<DatePreset>(defaultPreset);
+  const [showRec, setShowRec] = useState(showRecessions);
+  const [showAvg, setShowAvg] = useState(showAverage);
+  const [showStdDev, setShowStdDev] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
   const { data: obsData, error: obsError, loading: obsLoading, cached } = useFredObservations({
@@ -107,9 +112,23 @@ export function FredChart({
         series={chartSeries}
         datePreset={datePreset}
         height={height}
-        showRecessions={showRecessions}
-        showAverage={showAverage}
+        showRecessions={showRec}
+        showAverage={showAvg}
+        showStdDev={showStdDev}
+        showEvents={showEvents}
       />
+      <div className="mt-3">
+        <ChartAnnotationBar
+          showRecessions={showRec}
+          showAverage={showAvg}
+          showStdDev={showStdDev}
+          showEvents={showEvents}
+          onToggleRecessions={() => setShowRec((v) => !v)}
+          onToggleAverage={() => setShowAvg((v) => !v)}
+          onToggleStdDev={() => setShowStdDev((v) => !v)}
+          onToggleEvents={() => setShowEvents((v) => !v)}
+        />
+      </div>
       <ChartFooter source="Federal Reserve Economic Data (FRED)" cached={cached} />
       {showExplanation && (
         <ExplanationPanel

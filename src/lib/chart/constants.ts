@@ -1,4 +1,4 @@
-import type { RecessionPeriod } from './types';
+import type { RecessionPeriod, HistoricalEvent } from './types';
 
 // Accessible, colorblind-friendly palette (Wong palette + extras)
 export const CHART_COLORS = [
@@ -22,6 +22,70 @@ export const RECESSION_PERIODS: RecessionPeriod[] = [
   { start: '2001-03-01', end: '2001-11-01' },
   { start: '2007-12-01', end: '2009-06-01', label: 'Great Recession' },
   { start: '2020-02-01', end: '2020-04-01', label: 'COVID-19' },
+];
+
+// Key economic events for annotation markers
+export const HISTORICAL_EVENTS: HistoricalEvent[] = [
+  {
+    date: '2000-03-10',
+    label: 'Dot-com Peak',
+    description: 'The NASDAQ peaked at 5,048 before the dot-com bubble burst, erasing trillions in market value.',
+    category: 'crisis',
+  },
+  {
+    date: '2001-09-11',
+    label: '9/11 Attacks',
+    description: 'Terrorist attacks shut markets for 4 days. The Fed cut rates aggressively to stabilize the economy.',
+    category: 'crisis',
+  },
+  {
+    date: '2008-09-15',
+    label: 'Lehman Collapse',
+    description: 'Lehman Brothers filed for bankruptcy, triggering a global financial crisis and deep recession.',
+    category: 'crisis',
+  },
+  {
+    date: '2009-03-09',
+    label: 'Market Bottom',
+    description: 'The S&P 500 hit its crisis low of 676. A decade-long bull market followed.',
+    category: 'milestone',
+  },
+  {
+    date: '2015-12-16',
+    label: 'First Rate Hike',
+    description: 'The Fed raised rates for the first time since 2006, ending 7 years of near-zero rates.',
+    category: 'policy',
+  },
+  {
+    date: '2020-03-11',
+    label: 'COVID Pandemic',
+    description: 'WHO declared COVID-19 a pandemic. Markets crashed and the Fed cut rates to zero.',
+    category: 'crisis',
+  },
+  {
+    date: '2020-03-23',
+    label: 'COVID Market Low',
+    description: 'The S&P 500 bottomed at 2,237 before a historic recovery fueled by stimulus.',
+    category: 'milestone',
+  },
+  {
+    date: '2022-03-16',
+    label: 'Rate Hike Cycle',
+    description: 'The Fed began its most aggressive tightening cycle in decades to fight inflation, raising rates from 0% to over 5%.',
+    category: 'policy',
+  },
+  {
+    date: '2022-06-13',
+    label: 'Bear Market',
+    description: 'The S&P 500 officially entered a bear market, falling 20%+ from its January highs.',
+    category: 'crisis',
+  },
+  {
+    date: '2024-09-18',
+    label: 'Rate Cut Begins',
+    description: 'The Fed cut rates by 50 bps, signaling the end of the tightening cycle as inflation cooled.',
+    category: 'policy',
+  },
 ];
 
 export const DATE_PRESET_MONTHS: Record<string, number | null> = {

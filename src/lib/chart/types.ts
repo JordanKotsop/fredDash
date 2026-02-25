@@ -23,6 +23,13 @@ export interface RecessionPeriod {
   label?: string;
 }
 
+export interface HistoricalEvent {
+  date: string;
+  label: string;
+  description: string;
+  category: 'crisis' | 'policy' | 'milestone';
+}
+
 export interface ChartConfig {
   title: string;
   subtitle?: string;
