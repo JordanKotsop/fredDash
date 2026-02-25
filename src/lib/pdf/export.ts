@@ -1,6 +1,5 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { sanitiseColorsForCapture } from '@/lib/html2canvas-compat';
+import { toPng } from 'html-to-image';
 
 export interface PdfExportOptions {
   title: string;
@@ -23,6 +22,15 @@ function formatDate(): string {
   return new Date().toISOString().split('T')[0];
 }
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
 export async function exportChartToPdf(
   chartElement: HTMLElement,
   options: PdfExportOptions
@@ -36,24 +44,18 @@ export async function exportChartToPdf(
     dateRange,
   } = options;
 
-  // Capture chart at 2x resolution.
-  // html2canvas reads getComputedStyle() per element and cannot parse
-  // modern CSS color functions (lab, oklch) emitted by Tailwind v4.
-  // sanitiseColorsForCapture() converts them to hex via the Canvas 2D API.
-  const canvas = await html2canvas(chartElement, {
-    scale: 2,
-    useCORS: true,
+  // Capture chart as PNG using html-to-image (foreignObject approach).
+  // Unlike html2canvas, this lets the browser handle all CSS rendering
+  // natively — no issues with modern color functions like lab()/oklch().
+  const imgData = await toPng(chartElement, {
+    pixelRatio: 2,
     backgroundColor: '#ffffff',
-    logging: false,
-    ignoreElements: (el) => {
-      return el.classList?.contains('sr-only');
-    },
-    onclone: (clonedDoc) => {
-      sanitiseColorsForCapture(clonedDoc);
+    filter: (node: HTMLElement) => {
+      return !node.classList?.contains('sr-only');
     },
   });
 
-  const imgData = canvas.toDataURL('image/png');
+  const img = await loadImage(imgData);
 
   // Create PDF (landscape A4)
   const doc = new jsPDF('landscape', 'mm', 'a4');
@@ -108,7 +110,7 @@ export async function exportChartToPdf(
   y += 2;
 
   // --- Chart Image ---
-  const imgAspect = canvas.width / canvas.height;
+  const imgAspect = img.width / img.height;
   const imgW = Math.min(contentW, 250);
   const imgH = imgW / imgAspect;
 

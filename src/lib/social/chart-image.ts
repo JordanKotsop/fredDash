@@ -1,24 +1,28 @@
-import html2canvas from 'html2canvas';
-import { sanitiseColorsForCapture } from '@/lib/html2canvas-compat';
+import { toPng } from 'html-to-image';
 
 const TWITTER_WIDTH = 1200;
 const TWITTER_HEIGHT = 675;
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
 export async function captureChartImage(
   chartElement: HTMLElement
 ): Promise<string> {
-  // Capture at 2x for sharpness.
-  // sanitiseColorsForCapture() converts Tailwind v4 lab()/oklch() colours
-  // to hex so html2canvas can parse them.
-  const canvas = await html2canvas(chartElement, {
-    scale: 2,
-    useCORS: true,
+  // Capture at 2x using html-to-image (foreignObject approach).
+  // The browser handles all CSS rendering natively — no lab()/oklch() issues.
+  const dataUrl = await toPng(chartElement, {
+    pixelRatio: 2,
     backgroundColor: '#ffffff',
-    logging: false,
-    onclone: (clonedDoc) => {
-      sanitiseColorsForCapture(clonedDoc);
-    },
   });
+
+  const sourceImg = await loadImage(dataUrl);
 
   // Create a new canvas at Twitter card dimensions
   const outputCanvas = document.createElement('canvas');
@@ -32,7 +36,7 @@ export async function captureChartImage(
   ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
 
   // Scale and center the chart within the card
-  const sourceAspect = canvas.width / canvas.height;
+  const sourceAspect = sourceImg.width / sourceImg.height;
   const targetAspect = outputCanvas.width / outputCanvas.height;
 
   let drawW: number, drawH: number, drawX: number, drawY: number;
@@ -52,7 +56,7 @@ export async function captureChartImage(
     drawY = padding;
   }
 
-  ctx.drawImage(canvas, drawX, drawY, drawW, drawH);
+  ctx.drawImage(sourceImg, drawX, drawY, drawW, drawH);
 
   // Watermark
   ctx.save();
