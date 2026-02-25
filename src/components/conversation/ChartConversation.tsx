@@ -5,6 +5,7 @@ import type { QueryInterpretation } from '@/lib/ai/types';
 import { useChartConversation } from '@/hooks/use-chart-conversation';
 import { FredMultiChart } from '@/components/charts';
 import { ExportPDFButton } from '@/components/pdf';
+import { SocialSharePanel } from '@/components/social';
 import { ConversationThread } from './ConversationThread';
 
 interface ChartConversationProps {
@@ -28,6 +29,7 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
   } = useChartConversation(interpretation);
 
   const [input, setInput] = useState('');
+  const [showSharePanel, setShowSharePanel] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
@@ -111,9 +113,31 @@ export function ChartConversation({ interpretation, onFollowUp }: ChartConversat
                 dateRange: chartState.dateRange,
               }}
             />
+            <button
+              onClick={() => setShowSharePanel(!showSharePanel)}
+              title="Share to social"
+              className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Social share panel */}
+      {showSharePanel && (
+        <SocialSharePanel
+          chartRef={chartContainerRef}
+          chartTitle={chartState.title}
+          chartSubtitle={chartState.subtitle}
+          seriesLabels={chartState.series.map((s) => s.label)}
+          dateRange={chartState.dateRange}
+          explanation={interpretation.explanation}
+          onClose={() => setShowSharePanel(false)}
+        />
+      )}
 
       {/* Initial explanation */}
       {interpretation.explanation && messages.length === 0 && (
