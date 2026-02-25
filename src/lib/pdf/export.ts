@@ -157,9 +157,12 @@ export async function exportChartToPdf(
     y += boxH + 4;
   }
 
-  // --- Conversation Excerpts ---
+  // --- Full Conversation ---
   if (conversationExcerpts?.length) {
-    if (y + 15 > pageH - 25) {
+    const footerReserve = 20; // space reserved for footer
+    const lineH = 3.8; // line height at font size 8
+
+    if (y + 15 > pageH - footerReserve) {
       doc.addPage();
       y = margin;
     }
@@ -167,17 +170,11 @@ export async function exportChartToPdf(
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(17, 24, 39);
-    doc.text('Conversation Highlights', margin, y);
-    y += 6;
+    doc.text('Conversation', margin, y);
+    y += 7;
 
-    for (const msg of conversationExcerpts.slice(0, 6)) {
-      if (y + 12 > pageH - 25) {
-        doc.addPage();
-        y = margin;
-      }
-
+    for (const msg of conversationExcerpts) {
       const prefix = msg.role === 'user' ? 'You: ' : 'AI: ';
-      const truncated = msg.content.length > 200 ? msg.content.slice(0, 200) + '...' : msg.content;
 
       doc.setFontSize(8);
       doc.setFont('helvetica', msg.role === 'user' ? 'bold' : 'normal');
@@ -186,9 +183,20 @@ export async function exportChartToPdf(
         msg.role === 'user' ? 99 : 85,
         msg.role === 'user' ? 235 : 99
       );
-      const lines = doc.splitTextToSize(`${prefix}${truncated}`, contentW - 4);
-      doc.text(lines, margin + 2, y);
-      y += lines.length * 3.8 + 3;
+
+      const lines: string[] = doc.splitTextToSize(`${prefix}${msg.content}`, contentW - 4);
+
+      // Render lines one-by-one, adding pages as needed
+      for (const line of lines) {
+        if (y + lineH > pageH - footerReserve) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(line, margin + 2, y);
+        y += lineH;
+      }
+
+      y += 3; // gap between messages
     }
   }
 
