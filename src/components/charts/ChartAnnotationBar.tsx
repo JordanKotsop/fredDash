@@ -28,11 +28,12 @@ function ToggleButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all"
-      style={active
-        ? { backgroundColor: color, borderColor: 'transparent', color: 'white' }
-        : { borderColor: 'var(--border)', color: 'var(--text-placeholder)', background: 'transparent' }
-      }
+      className={`flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all ${
+        active
+          ? 'border-transparent text-white'
+          : 'border-gray-200 dark:border-gray-700 text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800'
+      }`}
+      style={active ? { backgroundColor: color } : undefined}
     >
       {label}
     </button>
@@ -69,9 +70,9 @@ export function ChartAnnotationBar({
   }, [showEvents]);
 
   const categoryColors: Record<string, string> = {
-    crisis: 'var(--error)',
-    policy: 'var(--primary)',
-    milestone: 'var(--success)',
+    crisis: '#dc2626',
+    policy: '#2563eb',
+    milestone: '#16a34a',
   };
 
   const categoryLabels: Record<string, string> = {
@@ -83,45 +84,45 @@ export function ChartAnnotationBar({
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-[10px] font-medium uppercase tracking-wide mr-1" style={{ color: 'var(--text-placeholder)' }}>
+        <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mr-1">
           Overlays
         </span>
         <ToggleButton
           active={showRecessions}
           onClick={onToggleRecessions}
           label="Recessions"
-          color="#D35D6E"
+          color="#dc2626"
         />
         <ToggleButton
           active={showAverage}
           onClick={onToggleAverage}
           label="Average"
-          color="#6B7A8D"
+          color="#6b7280"
         />
         <ToggleButton
           active={showStdDev}
           onClick={onToggleStdDev}
           label="±1 Std Dev"
-          color="#8B6CC1"
+          color="#8b5cf6"
         />
         <ToggleButton
           active={showEvents}
           onClick={onToggleEvents}
           label="Events"
-          color="#5B7FA4"
+          color="#2563eb"
         />
       </div>
 
       {/* Expanded event explanation */}
       {expandedEvent && (
-        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg animate-in fade-in slide-in-from-top-1 duration-200" style={{ background: 'var(--surface-secondary)', border: '1px solid var(--border)' }}>
+        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg animate-in fade-in slide-in-from-top-1 duration-200">
           <div
             className="w-2.5 h-2.5 rounded-full mt-1 shrink-0"
             style={{ backgroundColor: categoryColors[expandedEvent.category] }}
           />
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2">
-              <span className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+              <span className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {expandedEvent.label}
               </span>
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full" style={{
@@ -130,7 +131,7 @@ export function ChartAnnotationBar({
               }}>
                 {categoryLabels[expandedEvent.category]}
               </span>
-              <span className="text-xs" style={{ color: 'var(--text-placeholder)' }}>
+              <span className="text-xs text-gray-400">
                 {new Date(expandedEvent.date + 'T00:00:00').toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -138,14 +139,13 @@ export function ChartAnnotationBar({
                 })}
               </span>
             </div>
-            <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
               {expandedEvent.description}
             </p>
           </div>
           <button
             onClick={() => setExpandedEvent(null)}
-            className="p-0.5 shrink-0 transition-colors"
-            style={{ color: 'var(--text-placeholder)' }}
+            className="p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 shrink-0"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

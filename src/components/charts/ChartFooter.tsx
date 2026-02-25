@@ -7,12 +7,12 @@ interface ChartFooterProps {
 
 export function ChartFooter({ source, cached }: ChartFooterProps) {
   return (
-    <div className="flex items-center justify-between mt-3 pt-2" style={{ borderTop: '1px solid var(--border)' }}>
-      <p className="text-[10px]" style={{ color: 'var(--text-placeholder)' }}>
+    <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100 dark:border-gray-800">
+      <p className="text-[10px] text-gray-400 dark:text-gray-500">
         Source: {source ?? 'Federal Reserve Economic Data (FRED)'}
       </p>
       {cached && (
-        <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ color: 'var(--text-placeholder)', background: 'var(--surface-secondary)' }}>
+        <span className="text-[10px] text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800 px-1.5 py-0.5 rounded">
           cached
         </span>
       )}

@@ -9,21 +9,20 @@ export default function Home() {
   const { interpretation, loading, error, history, submitQuery, selectFromHistory } = useNLQuery();
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
-      <header className="border-b" style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <Link href="/" className="group">
-            <h1 className="text-lg sm:text-xl font-bold transition-colors duration-200" style={{ color: 'var(--primary)' }}>
+            <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
               FredDash
             </h1>
-            <p className="text-xs sm:text-sm transition-colors duration-200" style={{ color: 'var(--text-tertiary)' }}>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200">
               AI-Powered Economic Data Dashboard
             </p>
           </Link>
           <Link
             href="/settings"
-            className="p-2 transition-colors"
-            style={{ color: 'var(--text-tertiary)' }}
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             title="Settings"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -47,8 +46,8 @@ export default function Home() {
 
             {/* Error */}
             {error && (
-              <div className="mt-4 p-4 rounded-xl" style={{ background: 'var(--error-muted)', border: '1px solid var(--error)' }}>
-                <p className="text-sm" style={{ color: 'var(--error)' }}>{error}</p>
+              <div className="mt-4 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-xl">
+                <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
               </div>
             )}
 
@@ -73,10 +72,10 @@ export default function Home() {
           {/* Curated dashboards (shown when no query result) */}
           {!interpretation && !loading && (
             <section>
-              <h2 className="text-base sm:text-lg font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                 Curated Dashboards
               </h2>
-              <p className="text-xs sm:text-sm mb-3 sm:mb-4" style={{ color: 'var(--text-tertiary)' }}>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4">
                 Browse key economic indicators by topic — no jargon, just the numbers that matter.
               </p>
               <DashboardNav />

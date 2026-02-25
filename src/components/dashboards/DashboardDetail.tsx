@@ -20,8 +20,7 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
       <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
         <Link
           href="/"
-          className="p-1.5 transition-colors"
-          style={{ color: 'var(--text-tertiary)' }}
+          className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -36,10 +35,10 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
           </span>
         </div>
         <div>
-          <h1 className="text-lg sm:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
             {dashboard.title}
           </h1>
-          <p className="text-xs sm:text-sm" style={{ color: 'var(--text-tertiary)' }}>
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             {dashboard.description}
           </p>
         </div>
@@ -49,13 +48,12 @@ export function DashboardDetail({ dashboard }: DashboardDetailProps) {
       {expandedSeries && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {dashboard.indicators.find((i) => i.seriesId === expandedSeries)?.displayName}
             </p>
             <button
               onClick={() => setExpandedSeries(null)}
-              className="text-xs transition-colors flex items-center gap-1"
-              style={{ color: 'var(--text-tertiary)' }}
+              className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex items-center gap-1"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
